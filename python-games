@@ -1,0 +1,288 @@
+# Python Program to illustrate
+# Hangman Game
+import random
+from collections import Counter
+
+someWords = '''apple banana mango strawberry
+orange grape pineapple apricot lemon coconut watermelon
+cherry papaya berry peach lychee muskmelon'''
+
+someWords = someWords.split(' ')
+# randomly choose a secret word from our "someWords" LIST.
+word = random.choice(someWords)
+
+if __name__ == '__main__':
+    print('Guess the word! HINT: word is a name of a fruit')
+
+    for i in word:
+        # For printing the empty spaces for letters of the word
+        print('_', end=' ')
+    print()
+
+    playing = True
+    # List for storing the letters guessed by the player
+    letterGuessed = ''
+    chances = len(word) + 2
+    correct = 0
+    flag = 0
+    try:
+        while (chances != 0) and flag == 0:  # Flag is updated when the word is correctly guessed
+            print()
+            chances -= 1
+
+            try:
+                guess = str(input('Enter a letter to guess: '))
+            except:
+                print('Enter only a letter!')
+                continue
+
+            # Validation of the guess
+            if not guess.isalpha():
+                print('Enter only a LETTER')
+                continue
+            elif len(guess) > 1:
+                print('Enter only a SINGLE letter')
+                continue
+            elif guess in letterGuessed:
+                print('You have already guessed that letter')
+                continue
+
+            # If letter is guessed correctly
+            if guess in word:
+                # k stores the number of times the guessed letter occurs in the word
+                k = word.count(guess)
+                for _ in range(k):
+                    letterGuessed += guess  # The guessed letter is added as many times as it occurs
+
+            # Print the word
+            for char in word:
+                if char in letterGuessed and (Counter(letterGuessed) != Counter(word)):
+                    print(char, end=' ')
+                    correct += 1
+                # If user has guessed all the letters
+                # Once the correct word is guessed fully,
+                elif (Counter(letterGuessed) == Counter(word)):
+                    # the game ends, even if chances remain
+                    print("The word is: ", end=' ')
+                    print(word)
+                    flag = 1
+                    print('Congratulations, You won!')
+                    break  # To break out of the for loop
+                    break  # To break out of the while loop
+                else:
+                    print('_', end=' ')
+
+        # If user has used all of his chances
+        if chances <= 0 and (Counter(letterGuessed) != Counter(word)):
+            print()
+            print('You lost! Try again..')
+            print('The word was {}'.format(word))
+
+    except KeyboardInterrupt:
+        print()
+        print('Bye! Try again.')
+        exit()
+
+
+Python Program for word Guessing Game
+
+
+
+Word guessing Game in Python
+This program is a simple word-guessing game where the user has to guess the characters in a randomly selected word within a limited number of attempts. The program provides feedback after each guess, helping the user to either complete the word or lose the game based on their guesses.
+1. Importing the Random Module
+import random
+2. Getting the User’s Name, and Greeting the User
+The program asks the user for their name using the input() function. This name is stored in the variable name.
+name = input("What is your name? ")
+print("Good Luck ! ", name)
+3. List of Words and Choosing a Random Word
+A list of possible words for the guessing game is defined. These words are strings stored in a list called words. Also, the program selects a random word from the words list using random.choice(). The selected word is stored in the variable word.
+words = ['rainbow', 'computer', 'science', 'programming',
+        'python', 'mathematics', 'player', 'condition',
+        'reverse', 'water', 'board', 'geeks']
+word = random.choice(words)
+4. Prompting the User to Guess
+The program prompts the user to start guessing the characters of the randomly chosen word.
+print("Guess the characters")
+5. Initializing Guesses and Turns
+guesses: An empty string that will hold all the characters guessed by the user.
+turns: The number of attempts the user has to guess the word. Initially set to 12.
+guesses = ''
+turns = 12
+6. The Main Game Loop
+This while loop runs as long as the user has remaining turns. Inside the loop, the user will be prompted to guess characters.
+while turns > 0:
+6.1. Checking Each Character in the Word
+failed = 0: A counter for the number of characters that have not been correctly guessed.
+The for loop iterates through each character in the word.
+If the character has been guessed (i.e., it is in guesses), it is displayed.
+If the character has not been guessed, an underscore (_) is displayed, and failed is incremented.
+failed = 0
+   for char in word:
+       if char in guesses:
+           print(char, end=" ")
+       else:
+           print("_")
+           failed += 1
+6.2. Checking if the User Has Won
+If failed is 0, it means all characters in the word have been guessed correctly. The user wins, and the correct word is displayed. The game ends with a break statement.
+if failed == 0:
+       print("You Win")
+       print("The word is: ", word)
+       break
+6.3. Prompting for the Next Guess
+The user is prompted to guess a character.
+The guessed character is added to the guesses string.
+guess = input("guess a character:")
+   guesses += guess
+6.4. Handling Incorrect Guesses
+If the guessed character is not in the word, the number of turns decreases by 1.
+A “Wrong” message is displayed, along with the number of remaining guesses.
+if guess not in word:
+       turns -= 1
+       print("Wrong")
+       print("You have", + turns, 'more guesses')
+6.5. Checking if the User Has Lost
+If the user runs out of turns, the game ends with a “You Lose” message.
+if turns == 0:
+           print("You Loose")
+7. Ending the Game
+The game loop will end either when the user guesses the word correctly (all characters are guessed) or when the user runs out of turns.
+Complete Code
+import random
+
+name = input("What is your name? ")
+
+print("Good Luck ! ", name)
+
+words = ['rainbow', 'computer', 'science', 'programming',
+         'python', 'mathematics', 'player', 'condition',
+         'reverse', 'water', 'board', 'geeks']
+
+word = random.choice(words)
+
+print("Guess the characters")
+
+guesses = ''
+turns = 12
+
+while turns > 0:
+
+    failed = 0
+
+    for char in word:
+
+        if char in guesses:
+            print(char, end=" ")
+
+        else:
+            print("_")
+            failed += 1
+
+    if failed == 0:
+        print("You Win")
+        print("The word is: ", word)
+        break
+
+    print()
+    guess = input("guess a character:")
+
+    guesses += guess
+
+    if guess not in word:
+
+        turns -= 1
+        print("Wrong")
+        print("You have", + turns, 'more guesses')
+
+        if turns == 0:
+            print("You Loose")
+
+Output
+What is your name? Gautam
+Good Luck!  Gautam
+Guess the characters
+_
+_
+_
+_
+_
+guess a character:g
+g
+_
+_
+_
+_
+guess a character:e
+g
+e
+e
+_
+_
+guess a character:k
+g
+e
+e
+k
+_
+guess a character:s
+g
+e
+e
+k
+s
+You Win
+The word is:  geeks
+
+
+Number guessing game in Python
+
+
+Build a Number guessing game, in which the user selects a range.
+Let’s say User selected a range, i.e., from A to B, where A and B belong to Integer.
+Some random integer will be selected by the system and the user has to guess that integer in the minimum number of guesses
+
+(Explanation)
+If the User inputs range, let’s say from 1 to 50. And compiler randomly selected 42 as the integer. And now the guessing game started. So the half of 50 is 25. The user enters 25 as his/her First guess. This time compiler will show, “Try Again! You guessed too small”. That’s mean the integers less than 25 (from 1 to 25) are useless to be guessed. Now the range for user guessing is shorter, i.e., from 25 to 50. Intelligently! User guessed half of this range, so that, user guessed 37 as his/her second guess.  This time again the compiler shows the output, “Try Again! You guessed too small”. For the user, the guessing range is getting smaller by each guess. Now, the guessing range for user is from 37 to 50, for which the user guessed 43 as his/her third guess. This time the compiler will show an output “Try Again! You guessed too high”. So, the new guessing range for users will be from 37 to 43, again for which the user guessed the half of this range, that is, 40 as his/her fourth guess.  This time the compiler shows the output, “Try Again! You guessed too small”. Leaving the guess even smaller such that from 41 to 43. And now the user guessed 41 as his/her fifth guess. Which is wrong and shows output “Try Again! You guessed too small”. And finally, the User Guessed the right number which is 42 as his/her sixth guess.
+         Total Number of Guesses = 6
+So, the minimum number of guesses depends upon range. And the compiler must calculate the minimum number of guessing depends upon the range, on its own. For this, we have a formula:-
+Minimum number of guessing = log2(Upper bound – lower bound + 1)
+
+
+
+
+Solution
+import random
+
+print("Hi welcome to the game, This is a number guessing game.\nYou got 7 chances to guess the number. Let's start the game")
+
+number_to_guess = random.randrange(100)
+
+chances = 7
+
+guess_counter = 0
+
+while guess_counter < chances:
+
+    guess_counter += 1
+    my_guess = int(input('Please Enter your Guess : '))
+
+    if my_guess == number_to_guess:
+        print(f'The number is {number_to_guess} and you found it right !! in the {guess_counter} attempt')
+        break
+
+    elif guess_counter >= chances and my_guess != number_to_guess:
+        print(f'Oops sorry, The number is {number_to_guess} better luck next time')
+
+    elif my_guess > number_to_guess:
+        print('Your guess is higher ')
+
+    elif my_guess < number_to_guess:
+        print('Your guess is lesser')
+
+
+Python projects
+
+https://www.geeksforgeeks.org/python-projects-beginner-to-advanced/
+
